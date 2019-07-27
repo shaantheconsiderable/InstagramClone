@@ -1,5 +1,6 @@
 package com.shaan.instagramclone;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,7 @@ import java.util.List;
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     private EditText edtPunchSpeed, edtPunchPower, edtKickSpeed, edtKickPower;
-    private Button btnSave,btnGetAllData;
+    private Button btnSave,btnGetAllData, btnNextActivity;
     private TextView txtGetData;
     private String allKickBoxers;
 
@@ -34,6 +35,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         edtPunchPower = findViewById(R.id.edtPunchPower);
         edtKickSpeed = findViewById(R.id.edtKickSpeed);
         edtKickPower = findViewById(R.id.edtKickPower);
+        btnNextActivity = findViewById(R.id.btnNextActivity);
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
         txtGetData = findViewById(R.id.txtGetData);
@@ -61,6 +63,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
                 allKickBoxers = "";
                 ParseQuery<ParseObject> queryAll = ParseQuery.getQuery("KickBoxer");
+                queryAll.whereGreaterThan("punchPower", 100);
                 queryAll.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
@@ -68,9 +71,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                                 if(objects.size() >0){
 
                                     for(ParseObject kickBoxer: objects){
-                                        allKickBoxers = allKickBoxers + kickBoxer.get("kickBoxerName") + " - Punch Speed:  " + kickBoxer.get("punchSpeed") + "\n";
+                                        allKickBoxers = allKickBoxers + kickBoxer.get("kickBoxerName") +
+                                                " - Punch Speed:  " + kickBoxer.get("punchSpeed") + "\n";
                                     }
-                                    FancyToast.makeText(SignUp.this, allKickBoxers, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
+                                    FancyToast.makeText(SignUp.this, allKickBoxers,
+                                            FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
 
                                 }
                                 else{
@@ -80,6 +85,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                             }
                     }
                 });
+            }
+        });
+
+        btnNextActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(SignUp.this, SignUpLoginActivity.class);
+                    startActivity(intent);
             }
         });
     }
