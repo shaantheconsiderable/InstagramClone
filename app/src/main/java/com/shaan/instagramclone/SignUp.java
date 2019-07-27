@@ -21,122 +21,22 @@ import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText edtPunchSpeed, edtPunchPower, edtKickSpeed, edtKickPower;
-    private Button btnSave,btnGetAllData, btnNextActivity;
-    private TextView txtGetData;
-    private String allKickBoxers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        edtPunchSpeed = findViewById(R.id.edtPunchSpeed);
-        edtPunchPower = findViewById(R.id.edtPunchPower);
-        edtKickSpeed = findViewById(R.id.edtKickSpeed);
-        edtKickPower = findViewById(R.id.edtKickPower);
-        btnNextActivity = findViewById(R.id.btnNextActivity);
-        btnSave = findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(this);
-        txtGetData = findViewById(R.id.txtGetData);
-        btnGetAllData = findViewById(R.id.btnGetAllData);
-        txtGetData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("KickBoxer");
-                parseQuery.getInBackground("BwELUpyKAl", new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject object, ParseException e) {
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.instamini);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-                        if(object != null && e == null){
-                            txtGetData.setText(object.get("kickBoxerName")+ " - " + "KickSpeed : " + object.get("kickSpeed"));
-                        }
 
-                    }
-                });
-            }
-        });
-
-        btnGetAllData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                allKickBoxers = "";
-                ParseQuery<ParseObject> queryAll = ParseQuery.getQuery("KickBoxer");
-                queryAll.whereGreaterThan("punchPower", 100);
-                queryAll.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> objects, ParseException e) {
-                            if(e == null){
-                                if(objects.size() >0){
-
-                                    for(ParseObject kickBoxer: objects){
-                                        allKickBoxers = allKickBoxers + kickBoxer.get("kickBoxerName") +
-                                                " - Punch Speed:  " + kickBoxer.get("punchSpeed") + "\n";
-                                    }
-                                    FancyToast.makeText(SignUp.this, allKickBoxers,
-                                            FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
-
-                                }
-                                else{
-                                    FancyToast.makeText(SignUp.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
-
-                                }
-                            }
-                    }
-                });
-            }
-        });
-
-        btnNextActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent intent = new Intent(SignUp.this, SignUpLoginActivity.class);
-                    startActivity(intent);
-            }
-        });
     }
 
     @Override
-    public void onClick(View buttonView) {
+    public void onClick(View v) {
 
-        try {
-            ParseObject kickBoxer = new ParseObject("KickBoxer");
-            kickBoxer.put("punchSpeed", Integer.parseInt(edtPunchSpeed.getText().toString()));
-            kickBoxer.put("punchPower", Integer.parseInt(edtPunchPower.getText().toString()));
-            kickBoxer.put("kickSpeed", Integer.parseInt(edtKickSpeed.getText().toString()));
-            kickBoxer.put("kickPower", Integer.parseInt(edtKickPower.getText().toString()));
-            kickBoxer.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        //Toast.makeText(SignUp.this, "Save to server is successful", Toast.LENGTH_LONG).show();
-                        FancyToast.makeText(SignUp.this, "Saved to Server", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
-                    } else {
-                        //Toast.makeText(SignUp.this, e.getMessage(),Toast.LENGTH_LONG).show();
-                        FancyToast.makeText(SignUp.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
-                    }
-                }
-            });
-        }
-        catch (Exception e){
-            FancyToast.makeText(SignUp.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
-
-        }
     }
-//    public  void txtHelloWorldClicked (View view){
-//        ParseObject gameScore = new ParseObject("KickBoxer");
-//        gameScore.put("punchSpeed", 957);
-//        gameScore.put("punchPower", 183);
-//        gameScore.put("kickSpeed", 339);
-//        gameScore.put("kickPower", 219);
-//        gameScore.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                if(e==null)
-//                    Toast.makeText(SignUp.this, "Save to parse server successful", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
-
 }
