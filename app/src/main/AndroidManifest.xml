@@ -10,10 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUp"
-               android:label="Sign Up"
-            >
-
+        <activity android:name=".LogIn"
+                android:label="Log In"
+            ></activity>
+        <activity
+            android:name=".SignUp"
+            android:label="Instagram Clone">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
