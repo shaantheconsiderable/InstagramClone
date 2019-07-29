@@ -47,7 +47,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         });
 
         if(ParseUser.getCurrentUser() != null){
-            ParseUser.getCurrentUser().logOut();
+            //ParseUser.getCurrentUser().logOut();
+            transitionToSocialMediaActivity();
         }
 
     }
@@ -67,6 +68,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
                                 if(user != null && e == null){
                                     FancyToast.makeText(LogIn.this, user.get("username") +
                                             " is logged is successfully ", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
+                                    transitionToSocialMediaActivity();
                                 }
                                 else{
                                     FancyToast.makeText(LogIn.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
@@ -92,5 +94,9 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         catch(Exception e){
          e.printStackTrace();
         }
+    }
+    public void transitionToSocialMediaActivity(){
+        Intent intent = new Intent(LogIn.this, SocialMediaActivity.class);
+        startActivity(intent);
     }
 }
